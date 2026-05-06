@@ -1,0 +1,12 @@
+{
+  "name": "bot-nhay-khang",
+  "version": "1.0.0",
+  "description": "Bot nhay FB",
+  "main": "khangnhay.js",
+  "scripts": {
+    "start": "node khangnhay.js"
+  },
+  "dependencies": {
+    "fca-unofficial": "^1.3.10"
+  }
+}
