@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>dhkhang - Gojo Cyber Music</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #05050a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: white;
+}
+
+body.party-active {
+    animation: cyberGlow 2s infinite alternate;
+}
+
+@keyframes cyberGlow {
+    0% {
+        background: #05050a;
+    }
+    50% {
+        background: #10021b;
+    }
+    100% {
+        background: #00151b;
+    }
+}
+
+/* Background particles */
+.bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.bg span {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #00f0ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f0ff;
+    animation: float 8s linear infinite;
+}
+
+.bg span:nth-child(1) { left: 10%; animation-delay: 0s; }
+.bg span:nth-child(2) { left: 20%; animation-delay: 2s; }
+.bg span:nth-child(3) { left: 35%; animation-delay: 4s; }
+.bg span:nth-child(4) { left: 50%; animation-delay: 1s; }
+.bg span:nth-child(5) { left: 65%; animation-delay: 3s; }
+.bg span:nth-child(6) { left: 80%; animation-delay: 5s; }
+.bg span:nth-child(7) { left: 90%; animation-delay: 6s; }
+
+@keyframes float {
+    from {
+        top: 110%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    to {
+        top: -10%;
+        opacity: 0;
+    }
+}
+
+/* Main */
+.dashboard {
+    width: 92%;
+    max-width: 500px;
+    padding: 25px;
+    background: rgba(8, 8, 18, 0.94);
+    border: 2px solid #00f0ff;
+    border-radius: 22px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    box-shadow:
+        0 0 20px rgba(0, 240, 255, .35),
+        inset 0 0 30px rgba(0, 240, 255, .04);
+    backdrop-filter: blur(12px);
+}
+
+/* Name */
+.user-name {
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    animation: neonColor 3s infinite linear;
+}
+
+@keyframes neonColor {
+    0% {
+        color: #00f0ff;
+        text-shadow: 0 0 10px #00f0ff;
+    }
+
+    33% {
+        color: #9100ff;
+        text-shadow: 0 0 15px #9100ff;
+    }
+
+    66% {
+        color: #ff0077;
+        text-shadow: 0 0 15px #ff0077;
+    }
+
+    100% {
+        color: #00f0ff;
+        text-shadow: 0 0 10px #00f0ff;
+    }
+}
+
+/* Gojo */
+.anime-box {
+    width: 190px;
+    height: 190px;
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    border: 4px solid #00f0ff;
+    overflow: hidden;
+    box-shadow:
+        0 0 20px #00f0ff,
+        0 0 50px rgba(0, 240, 255, .3);
+    transition: .4s;
+}
+
+.anime-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.playing .anime-box {
+    animation:
+        rotateAnime 12s linear infinite,
+        pulseBox .6s infinite alternate;
+}
+
+@keyframes rotateAnime {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulseBox {
+    from {
+        border-color: #00f0ff;
+        box-shadow: 0 0 20px #00f0ff;
+    }
+
+    to {
+        border-color: #ff0077;
+        box-shadow: 0 0 30px #ff0077;
+    }
+}
+
+/* Song */
+.song-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 6px;
+}
+
+.song-artist {
+    color: #9292b8;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+/* Progress */
+.progress-container {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+#progress {
+    width: 100%;
+    height: 6px;
+    appearance: none;
+    border-radius: 10px;
+    background: #25253b;
+    cursor: pointer;
+}
+
+#progress::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #00f0ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f0ff;
+}
+
+.time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #777795;
+    margin-top: 5px;
+}
+
+/* Buttons */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    border: 1px solid #00f0ff;
+    background: #111122;
+    color: #00f0ff;
+    padding: 11px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.btn:hover {
+    background: #00f0ff;
+    color: #000;
+    box-shadow: 0 0 15px #00f0ff;
+    transform: translateY(-2px);
+}
+
+.btn-main {
+    background: #ff0077;
+    border-color: #ff0077;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-main:hover {
+    background: white;
+    color: #ff0077;
+    box-shadow: 0 0 20px white;
+}
+
+/* Custom MP3 */
+.custom-link-section {
+    background: rgba(0,0,0,.45);
+    border: 1px dashed #444;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+}
+
+.custom-input {
+    width: 65%;
+    padding: 9px;
+    background: #181827;
+    border: 1px solid #00f0ff;
+    color: white;
+    border-radius: 6px;
+    outline: none;
+}
+
+.custom-link-section .btn {
+    padding: 8px 10px;
+    font-size: 11px;
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    padding: 14px;
+    background: rgba(0,0,0,.55);
+    border-radius: 13px;
+    border-top: 2px solid #ff0077;
+    text-align: left;
+    font-size: 12px;
+    color: #9999b5;
+}
+
+.stat-item span,
+.stat-full span {
+    color: #00f0ff;
+    font-weight: bold;
+}
+
+.stat-full {
+    grid-column: span 2;
+    border-top: 1px solid #333;
+    padding-top: 8px;
+    margin-top: 3px;
+}
+
+/* Mobile */
+@media(max-width: 430px) {
+    .dashboard {
+        padding: 18px;
+    }
+
+    .user-name {
+        font-size: 28px;
+    }
+
+    .anime-box {
+        width: 160px;
+        height: 160px;
+    }
+
+    .btn {
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<div class="dashboard" id="mainDashboard">
+
+    <div class="user-name">dhkhang</div>
+
+    <div class="anime-box">
+        <img
+            src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80"
+            alt="Anime"
+            onerror="this.src='https://picsum.photos/600/600';"
+        >
+    </div>
+
+    <div class="song-title" id="trackTitle">
+        Đang tải bài hát...
+    </div>
+
+    <div class="song-artist" id="trackArtist">
+        Cyber Music
+    </div>
+
+    <div class="progress-container">
+        <input
+            type="range"
+            id="progress"
+            min="0"
+            max="100"
+            value="0"
+        >
+
+        <div class="time">
+            <span id="currentTrackTime">0:00</span>
+            <span id="totalTrackTime">0:00</span>
+        </div>
+    </div>
+
+    <div class="controls">
+
+        <button class="btn" onclick="prevTrack()">
+            ⏮ Trước
+        </button>
+
+        <button
+            class="btn btn-main"
+            id="playBtn"
+            onclick="togglePlay()"
+        >
+            ▶ BẬT NHẠC
+        </button>
+
+        <button class="btn" onclick="nextTrack()">
+            Kế tiếp ⏭
+        </button>
+
+    </div>
+
+    <div class="custom-link-section">
+
+        <input
+            class="custom-input"
+            id="customUrl"
+            type="url"
+            placeholder="Dán link .mp3..."
+        >
+
+        <button
+            class="btn"
+            onclick="loadCustomTrack()"
+        >
+            Phát
+        </button>
+
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-item">
+            Ngày:
+            <span id="currentDate">--/--/----</span>
+        </div>
+
+        <div class="stat-item">
+            Giờ:
+            <span id="currentTime">00:00:00</span>
+        </div>
+
+        <div class="stat-item">
+            T.gian nghe:
+            <span id="listenTime">0s</span>
+        </div>
+
+        <div class="stat-item">
+            T.gian dùng:
+            <span id="sessionTime">0s</span>
+        </div>
+
+        <div class="stat-full">
+            Ước tính Pin tiêu thụ:
+            <span id="batteryUsed">0.00%</span>
+            <br>
+            Tốc độ hao:
+            <span>0.02%/s</span>
+        </div>
+
+    </div>
+
+</div>
+
+<audio id="audioPlayer"></audio>
+
+<script>
+
+/* =========================
+   PLAYLIST
+========================= */
+
+const playlist = [
+
+    {
+        title: "Trời Cao Biển Rộng Không Buông",
+        artist: "Hot Trend Remix",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    },
+
+    {
+        title: "Lỗi Của Anh Sai Lầm Của Anh",
+        artist: "Melody Deep Music",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    },
+
+    {
+        title: "Cắt Đôi Nỗi Sầu",
+        artist: "Cyber Remix",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+    }
+
+];
+
+/* =========================
+   VARIABLES
+========================= */
+
+let currentIdx = 0;
+let isPlaying = false;
+
+let listenSeconds = 0;
+let sessionSeconds = 0;
+
+let batteryDrained = 0;
+
+const audio = document.getElementById("audioPlayer");
+const playBtn = document.getElementById("playBtn");
+const dashboard = document.getElementById("mainDashboard");
+
+const progress = document.getElementById("progress");
+
+/* =========================
+   LOAD TRACK
+========================= */
+
+function loadTrack(index) {
+
+    currentIdx = index;
+
+    const track = playlist[currentIdx];
+
+    audio.src = track.url;
+
+    document.getElementById("trackTitle").innerText =
+        track.title;
+
+    document.getElementById("trackArtist").innerText =
+        track.artist;
+
+    progress.value = 0;
+
+    document.getElementById("currentTrackTime").innerText =
+        "0:00";
+
+    document.getElementById("totalTrackTime").innerText =
+        "0:00";
+
+    if (isPlaying) {
+        audio.play().catch(() => {});
+    }
+}
+
+/* =========================
+   PLAY / PAUSE
+========================= */
+
+function togglePlay() {
+
+    if (audio.paused) {
+
+        audio.play()
+            .then(() => {
+
+                isPlaying = true;
+
+                playBtn.innerText = "⏸ TẠM DỪNG";
+
+                dashboard.classList.add("playing");
+
+                document.body.classList.add("party-active");
+
+            })
+            .catch(() => {
+
+                alert(
+                    "Không thể phát bài này. Hãy kiểm tra link MP3."
+                );
+
+            });
+
+    } else {
+
+        audio.pause();
+
+        isPlaying = false;
+
+        playBtn.innerText = "▶ TIẾP TỤC";
+
+        dashboard.classList.remove("playing");
+
+        document.body.classList.remove("party-active");
+    }
+}
+
+/* =========================
+   NEXT
+========================= */
+
+function nextTrack() {
+
+    currentIdx =
+        (currentIdx + 1) % playlist.length;
+
+    loadTrack(currentIdx);
+}
+
+/* =========================
+   PREVIOUS
+========================= */
+
+function prevTrack() {
+
+    currentIdx =
+        (currentIdx - 1 + playlist.length)
+        % playlist.length;
+
+    loadTrack(currentIdx);
+}
+
+/* =========================
+   CUSTOM MP3
+========================= */
+
+function loadCustomTrack() {
+
+    const url =
+        document.getElementById("customUrl")
+        .value
+        .trim();
+
+    if (!url) {
+
+        alert("Hãy nhập link MP3.");
+
+        return;
+    }
+
+    audio.src = url;
+
+    document.getElementById("trackTitle").innerText =
+        "🎵 Bài Hát Tùy Biến";
+
+    document.getElementById("trackArtist").innerText =
+        "Liên kết của dhkhang";
+
+    audio.play()
+        .then(() => {
+
+            isPlaying = true;
+
+            playBtn.innerText =
+                "⏸ TẠM DỪNG";
+
+            dashboard.classList.add("playing");
+
+            document.body.classList.add("party-active");
+
+        })
+        .catch(() => {
+
+            alert(
+                "Link không phát được. Hãy dùng link trực tiếp tới file .mp3."
+            );
+
+        });
+}
+
+/* =========================
+   AUDIO EVENTS
+========================= */
+
+audio.addEventListener("loadedmetadata", () => {
+
+    if (isFinite(audio.duration)) {
+
+        document.getElementById("totalTrackTime")
+            .innerText =
+            formatTime(audio.duration);
+
+    }
+
+});
+
+audio.addEventListener("timeupdate", () => {
+
+    if (!audio.duration) return;
+
+    progress.value =
+        (audio.currentTime / audio.duration) * 100;
+
+    document.getElementById("currentTrackTime")
+        .innerText =
+        formatTime(audio.currentTime);
+
+});
+
+audio.addEventListener("ended", () => {
+
+    nextTrack();
+
+});
+
+progress.addEventListener("input", () => {
+
+    if (!audio.duration) return;
+
+    audio.currentTime =
+        (progress.value / 100) *
+        audio.duration;
+
+});
+
+/* =========================
+   TIME FORMAT
+========================= */
+
+function formatTime(seconds) {
+
+    if (!isFinite(seconds)) {
+        return "0:00";
+    }
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        Math.floor(seconds % 60);
+
+    return (
+        minutes +
+        ":" +
+        String(secs).padStart(2, "0")
+    );
+}
+
+/* =========================
+   DATE / TIME / BATTERY
+========================= */
+
+setInterval(() => {
+
+    const now = new Date();
+
+    document.getElementById("currentDate")
+        .innerText =
+        now.toLocaleDateString("vi-VN");
+
+    document.getElementById("currentTime")
+        .innerText =
+        now.toLocaleTimeString("vi-VN");
+
+    sessionSeconds++;
+
+    document.getElementById("sessionTime")
+        .innerText =
+        sessionSeconds + "s";
+
+    if (isPlaying && !audio.paused) {
+
+        listenSeconds++;
+
+        document.getElementById("listenTime")
+            .innerText =
+            listenSeconds + "s";
+
+        batteryDrained += 0.02;
+
+        document.getElementById("batteryUsed")
+            .innerText =
+            batteryDrained.toFixed(2) + "%";
+    }
+
+}, 1000);
+
+/* =========================
+   INITIALIZE
+========================= */
+
+loadTrack(0);
+
+</script>
+
+</body>
+  </html>
